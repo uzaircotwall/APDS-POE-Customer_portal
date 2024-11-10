@@ -26,8 +26,7 @@ const paymentSchema = new mongoose.Schema({
   },
   transactionType: {
     type: String,
-    enum: ['incoming', 'outgoing', 'completed'], // Added 'completed' as a valid enum value
-    required: true,
+    enum: ['incoming', 'outgoing', 'completed'],
   },
   createdAt: {
     type: Date,
