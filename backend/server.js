@@ -28,9 +28,9 @@ async function createDefaultAdmin() {
         idNumber: '0000000000000', // Provide a default idNumber
       });
       await adminUser.save();
-      console.log('Default admin user created with email: admin@example.com and password: admin123');
+      console.log('Default admin user created with email: first@admin.com and password: Admin123');
     } else {
-      console.log('Admin user already exists');
+      console.log('Default Admin user already exists');
     }
   } catch (error) {
     console.error('Error creating default admin user:', error);
@@ -56,10 +56,10 @@ app.use((req, res, next) => {
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: 'https://localhost:3000', // React app URL
+  origin: 'https://localhost:3000', 
   credentials: true,
 }));
-app.use(morgan('dev')); // Log all requests to the console
+app.use(morgan('dev')); 
 app.use(helmet()); // Use Helmet to set secure HTTP headers
 
 // Routes
@@ -82,8 +82,8 @@ app.use((err, req, res, next) => {
 
 // SSL Options
 const sslOptions = {
-  key: fs.readFileSync('keys/localhost+2-key.pem'), // Update path to match where you saved the key
-  cert: fs.readFileSync('keys/localhost+2.pem') // Update path to match where you saved the cert
+  key: fs.readFileSync('certificates/localhost+3-key.pem'), 
+  cert: fs.readFileSync('certificates/localhost+3.pem') 
 };
 
 // Start HTTPS Server

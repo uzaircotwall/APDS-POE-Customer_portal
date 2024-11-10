@@ -64,7 +64,7 @@ const PaymentForm = ({ token, onTransactionUpdate }) => {
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-lg max-w-md mx-auto text-center">
-      <h2 className="text-2xl font-bold text-yellow-700 mb-6">Send Funds</h2>
+      <h2 className="text-2xl font-bold text-blue-700 mb-6">Send Funds</h2>
 
       {message && (
         <p className="mb-4 text-sm font-semibold text-green-600 bg-green-100 p-2 rounded-lg">
@@ -84,7 +84,7 @@ const PaymentForm = ({ token, onTransactionUpdate }) => {
           <div className="flex justify-center space-x-4">
             <button
               onClick={handleConfirm}
-              className="bg-green-500 text-white py-2 px-4 rounded-lg shadow hover:bg-green-600 transition-all duration-200"
+              className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-600 transition-all duration-200"
             >
               Confirm
             </button>
@@ -109,7 +109,7 @@ const PaymentForm = ({ token, onTransactionUpdate }) => {
               value={recipientEmail}
               onChange={(e) => setRecipientEmail(e.target.value)}
               required
-              className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all"
             />
           </div>
 
@@ -124,7 +124,7 @@ const PaymentForm = ({ token, onTransactionUpdate }) => {
               value={swiftCode}
               onChange={(e) => setSwiftCode(e.target.value)}
               required
-              className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all"
             />
           </div>
 
@@ -139,7 +139,7 @@ const PaymentForm = ({ token, onTransactionUpdate }) => {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               required
-              className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all"
             />
           </div>
 
@@ -151,7 +151,7 @@ const PaymentForm = ({ token, onTransactionUpdate }) => {
               id="currency"
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
-              className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all"
             >
               <option value="USD">USD - US Dollar</option>
               <option value="EUR">EUR - Euro</option>
@@ -162,7 +162,7 @@ const PaymentForm = ({ token, onTransactionUpdate }) => {
 
           <button
             type="submit"
-            className="w-full py-3 mt-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-bold rounded-lg shadow-lg hover:from-yellow-600 hover:to-yellow-700 transform transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2"
+            className="w-full py-3 mt-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-lg shadow-lg hover:from-blue-600 hover:to-blue-700 transform transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
           >
             Preview Payment
           </button>
