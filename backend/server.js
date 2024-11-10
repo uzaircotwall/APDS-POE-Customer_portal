@@ -17,11 +17,11 @@ async function createDefaultAdmin() {
   try {
     const adminExists = await User.findOne({ role: 'admin' });
     if (!adminExists) {
-      const hashedPassword = await bcrypt.hash('admin123', 10);
+      const hashedPassword = await bcrypt.hash('Admin123', 10);
       const adminUser = new User({
         name: 'Admin',
         surname: 'User', // Default surname
-        email: 'admin@example.com',
+        email: 'first@admin.com',
         password: hashedPassword,
         role: 'admin',
         accountNumber: Math.floor(1000000000 + Math.random() * 9000000000).toString(), // Generates a random 10-digit account number

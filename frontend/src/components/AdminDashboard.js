@@ -85,9 +85,9 @@ const AdminDashboard = ({ token }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 p-8">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg">
-        <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 p-6 rounded-t-2xl">
+        <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-t-2xl">
           <h2 className="text-3xl font-bold text-white text-center">Admin Dashboard</h2>
           <p className="text-white text-center">Manage Pending Payments & Add Admins</p>
         </div>
@@ -105,7 +105,7 @@ const AdminDashboard = ({ token }) => {
 
         {loading ? (
           <div className="p-10 flex items-center justify-center">
-            <Loader className="animate-spin text-yellow-500 w-10 h-10" />
+            <Loader className="animate-spin text-blue-500 w-10 h-10" />
           </div>
         ) : (
           <ul className="p-6 space-y-4">
@@ -113,7 +113,7 @@ const AdminDashboard = ({ token }) => {
               <p className="text-gray-500 text-center">No pending payments at the moment.</p>
             ) : (
               payments.map((payment) => (
-                <li key={payment._id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow-md">
+                <li key={payment._id} className="flex items-center justify-between p-4 bg-blue-50 rounded-lg shadow-md">
                   <div>
                     <p className="text-lg font-medium text-gray-700">
                       <strong>From:</strong> {payment.sender?.name || 'Unknown'} ({payment.sender?.email || 'N/A'})
@@ -128,7 +128,7 @@ const AdminDashboard = ({ token }) => {
                   <div className="flex space-x-2">
                     <button
                       onClick={() => handleApprove(payment._id)}
-                      className={`flex items-center bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition-all ${processing === payment._id ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      className={`flex items-center bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition-all ${processing === payment._id ? 'opacity-50 cursor-not-allowed' : ''}`}
                       disabled={processing === payment._id}
                     >
                       {processing === payment._id ? (
@@ -157,8 +157,8 @@ const AdminDashboard = ({ token }) => {
           </ul>
         )}
 
-        <div className="p-6 bg-gray-100 rounded-b-2xl">
-          <h3 className="text-xl font-semibold mb-4">Add New Admin</h3>
+        <div className="p-6 bg-blue-50 rounded-b-2xl">
+          <h3 className="text-xl font-semibold mb-4 text-blue-600">Add New Admin</h3>
           <form onSubmit={handleAddAdmin} className="space-y-4">
             <input
               type="text"

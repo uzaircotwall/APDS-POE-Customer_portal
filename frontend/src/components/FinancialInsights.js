@@ -38,7 +38,7 @@ const FinancialInsights = ({ transactions = [] }) => {
         {
           label: 'In vs Out',
           data: [moneyIn, moneyOut],
-          backgroundColor: ['#4caf50', '#ff6384'], // Green for in, red for out
+          backgroundColor: ['#4F91FF', '#FF6B6B'], // Blue for in, soft red for out
         },
       ],
     });
@@ -50,20 +50,28 @@ const FinancialInsights = ({ transactions = [] }) => {
       legend: {
         display: true,
         position: 'top',
+        labels: {
+          color: '#4F91FF', // Blue labels for consistency
+        },
       },
       tooltip: {
         enabled: true,
+        callbacks: {
+          label: function (tooltipItem) {
+            return `${tooltipItem.label}: R${tooltipItem.raw}`;
+          },
+        },
       },
     },
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-lg mt-6">
-      <h2 className="text-xl font-semibold text-center mb-4 text-yellow-600">Financial Insights</h2>
+    <div className="bg-blue-50 p-6 rounded-lg shadow-lg mt-6">
+      <h2 className="text-2xl font-semibold text-center mb-6 text-blue-600">Financial Insights</h2>
       {transactions.length > 0 ? (
         <Pie data={chartData} options={options} />
       ) : (
-        <p className="text-center text-gray-500">No transaction data available to display.</p>
+        <p className="text-center text-blue-500">No transaction data available to display.</p>
       )}
     </div>
   );
