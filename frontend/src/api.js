@@ -37,7 +37,6 @@ export const createPayment = async (token, paymentData) => {
 };
 
 export const getPaymentHistory = async (token) => {
-  console.log("Using token:", token); // Debugging output
   try {
     return await api.get('/api/payments/history', {
       headers: { Authorization: `Bearer ${token}` },
@@ -48,9 +47,7 @@ export const getPaymentHistory = async (token) => {
   }
 };
 
-
-
-// Retrieve balance and transaction history (ensure the backend route combines these)
+// Retrieve balance and transaction history
 export const getBalanceAndTransactions = async (token) => {
   try {
     return await api.get('/api/user/balance', {
@@ -70,6 +67,17 @@ export const getPendingPayments = async (token) => {
     });
   } catch (error) {
     console.error('Fetching pending payments failed:', error);
+    throw error;
+  }
+};
+
+export const getUserProfile = async (token) => {
+  try {
+    return await api.get('/api/user/profile', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch (error) {
+    console.error('Fetching user profile failed:', error);
     throw error;
   }
 };

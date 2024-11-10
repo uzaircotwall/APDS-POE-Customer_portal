@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { CheckCircle, XCircle, Loader } from 'lucide-react';
 import { getPendingPayments, approvePayment, rejectPayment } from '../api';
 import api from '../api';
@@ -9,14 +9,16 @@ const AdminDashboard = ({ token }) => {
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState(null);
-  const [adminForm, setAdminForm] = useState({ name: '', surname: '', email: '', password: '', idNumber: '' });
+  const [adminForm, setAdminForm] = useState({
+    name: '',
+    surname: '',
+    email: '',
+    password: '',
+    idNumber: ''
+  });
   const [addingAdmin, setAddingAdmin] = useState(false);
 
-  useEffect(() => {
-    fetchPendingPayments();
-  }, [token]);
-
-  const fetchPendingPayments = async () => {
+  const fetchPendingPayments = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -28,7 +30,11 @@ const AdminDashboard = ({ token }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    fetchPendingPayments();
+  }, [fetchPendingPayments]);
 
   const handleApprove = async (id) => {
     setError(null);
@@ -69,13 +75,17 @@ const AdminDashboard = ({ token }) => {
     setMessage(null);
 
     try {
-      const response = await api.post(
-        '/api/admin/add-admin',
-        adminForm,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.post('/api/admin/add-admin', adminForm, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setMessage('New admin added successfully.');
-      setAdminForm({ name: '', surname: '', email: '', password: '', idNumber: '' });
+      setAdminForm({
+        name: '',
+        surname: '',
+        email: '',
+        password: '',
+        idNumber: ''
+      });
     } catch (error) {
       console.error('Failed to add admin:', error);
       setError(error.response?.data.message || 'Failed to add admin. Please try again.');
@@ -86,7 +96,7 @@ const AdminDashboard = ({ token }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 p-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
         <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-t-2xl">
           <h2 className="text-3xl font-bold text-white text-center">Admin Dashboard</h2>
           <p className="text-white text-center">Manage Pending Payments & Add Admins</p>

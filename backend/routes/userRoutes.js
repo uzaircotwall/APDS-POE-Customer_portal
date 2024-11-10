@@ -3,17 +3,18 @@ const User = require('../model/userModel');
 const { verifyToken } = require('../middleware/authMiddleware');
 const router = express.Router();
 
-// Route to get user's balance and transaction history
+// Route to get user's balance, account number, and transaction history
 router.get('/balance', verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
-      .select('balance transactions')
+      .select('balance transactions accountNumber') // Include accountNumber in the selection
       .populate('transactions'); // Populating transactions
 
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     res.status(200).json({
       balance: user.balance,
+      accountNumber: user.accountNumber, // Add account number to response
       transactions: user.transactions,
     });
   } catch (error) {

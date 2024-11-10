@@ -2,11 +2,12 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { LayoutGrid, DollarSign, FileText } from 'lucide-react';
 import PaymentForm from './PaymentForm';
 import Statements from './Statements';
-import { getBalanceAndTransactions } from '../api';
+import { getBalanceAndTransactions, getUserProfile } from '../api'; // Import a new API call for user profile
 
 const UserHome = ({ token }) => {
   const [balance, setBalance] = useState(0);
   const [transactions, setTransactions] = useState([]);
+  const [accountNumber, setAccountNumber] = useState(''); // New state for account number
   const [selectedTab, setSelectedTab] = useState('makePayment');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,9 +16,12 @@ const UserHome = ({ token }) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await getBalanceAndTransactions(token);
-      setBalance(response.data.balance);
-      setTransactions(response.data.transactions);
+      const balanceResponse = await getBalanceAndTransactions(token);
+      setBalance(balanceResponse.data.balance);
+      setTransactions(balanceResponse.data.transactions);
+
+      const profileResponse = await getUserProfile(token); // Fetch the user profile
+      setAccountNumber(profileResponse.data.accountNumber); // Set the account number
     } catch (error) {
       console.error('Failed to fetch balance and transactions:', error);
       setError('Could not load data. Please try again.');
@@ -46,8 +50,10 @@ const UserHome = ({ token }) => {
             </h2>
           </div>
 
-          {/* Balance Display */}
+          {/* Balance and Account Display */}
           <div className="p-6 bg-blue-50 rounded-xl shadow-lg max-w-md mx-auto -mt-8 mb-6 text-center animate-bounce-slow">
+            <p className="text-gray-600 text-lg">Account Number</p>
+            <p className="text-xl font-semibold text-blue-700 mb-4">{accountNumber}</p>
             <p className="text-gray-600 text-lg">Current Balance</p>
             <p className="text-3xl font-bold text-blue-600">R{balance.toFixed(2)}</p>
           </div>
