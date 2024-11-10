@@ -28,10 +28,10 @@ function App() {
       <div className="App relative min-h-screen">
         {/* Logout Button in Top Right Corner */}
         {isAuthenticated && (
-          <div className="absolute top-4 right-4">
+          <div className="absolute top-4 right-4 z-50">
             <button
               onClick={handleLogout}
-              className="p-2 bg-yellow-500 text-black rounded hover:bg-yellow-600 transition duration-300"
+              className="p-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 transition-transform transform hover:scale-105"
             >
               Logout
             </button>
@@ -41,7 +41,7 @@ function App() {
         <Routes>
           {/* Homepage Route */}
           <Route path="/" element={!isAuthenticated ? <Home /> : <Navigate to={role === 'admin' ? "/admin" : "/user-home"} />} />
-          
+
           <Route
             path="/login"
             element={isAuthenticated ? <Navigate to={role === 'admin' ? "/admin" : "/user-home"} /> : <Login onLogin={handleLogin} />}
