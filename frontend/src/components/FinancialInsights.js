@@ -1,5 +1,3 @@
-// src/components/FinancialInsights.js
-
 import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -51,14 +49,14 @@ const FinancialInsights = ({ transactions = [] }) => {
         display: true,
         position: 'top',
         labels: {
-          color: '#4F91FF', // Blue labels for consistency
+          color: '#333', // Adjusted to neutral for readability
         },
       },
       tooltip: {
         enabled: true,
         callbacks: {
           label: function (tooltipItem) {
-            return `${tooltipItem.label}: R${tooltipItem.raw}`;
+            return `${tooltipItem.label}: R${tooltipItem.raw.toLocaleString()}`;
           },
         },
       },

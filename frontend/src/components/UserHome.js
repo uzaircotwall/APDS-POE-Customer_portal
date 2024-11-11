@@ -2,16 +2,17 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { LayoutGrid, DollarSign, FileText } from 'lucide-react';
 import PaymentForm from './PaymentForm';
 import Statements from './Statements';
-import { getBalanceAndTransactions, getUserProfile } from '../api'; // Import a new API call for user profile
+import { getBalanceAndTransactions, getUserProfile } from '../api'; // Import user profile API
 
 const UserHome = ({ token }) => {
   const [balance, setBalance] = useState(0);
   const [transactions, setTransactions] = useState([]);
-  const [accountNumber, setAccountNumber] = useState(''); // New state for account number
+  const [accountNumber, setAccountNumber] = useState(''); // State for account number
   const [selectedTab, setSelectedTab] = useState('makePayment');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch user data including balance and account number
   const fetchUserBalanceAndTransactions = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -20,7 +21,7 @@ const UserHome = ({ token }) => {
       setBalance(balanceResponse.data.balance);
       setTransactions(balanceResponse.data.transactions);
 
-      const profileResponse = await getUserProfile(token); // Fetch the user profile
+      const profileResponse = await getUserProfile(token); // Fetch user profile
       setAccountNumber(profileResponse.data.accountNumber); // Set the account number
     } catch (error) {
       console.error('Failed to fetch balance and transactions:', error);

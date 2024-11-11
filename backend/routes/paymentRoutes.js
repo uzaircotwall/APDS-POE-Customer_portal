@@ -4,7 +4,8 @@ const User = require('../model/userModel');
 const { verifyToken } = require('../middleware/authMiddleware');
 const router = express.Router();
 
-// Route to create a new payment request (single record for outgoing and incoming)
+// Route to create a new payment request (single record)
+// Route to create a new payment request (single record)
 router.post('/', verifyToken, async (req, res) => {
   console.log('POST /api/payments - Payment creation route hit');
 
@@ -14,7 +15,7 @@ router.post('/', verifyToken, async (req, res) => {
   try {
     console.log('Received payment data:', { senderId, recipientEmail, swiftCode, amount });
 
-    // Verify recipient exists
+    // Verify that the recipient exists
     const recipient = await User.findOne({ email: recipientEmail });
     if (!recipient) {
       console.log(`Recipient with email ${recipientEmail} not found`);
@@ -22,17 +23,17 @@ router.post('/', verifyToken, async (req, res) => {
     }
     console.log('Recipient found:', recipient);
 
-    // Create a single payment record for both sender and recipient
+    // Create a single payment record with transaction type indicating the nature for each user
     const payment = new Payment({
       sender: senderId,
       recipient: recipient._id,
       swiftCode,
       amount,
       status: 'Pending',
-      transactionType: 'outgoing'  // Initial state as outgoing, updated on approval
+      transactionType: 'outgoing', // Use 'outgoing' for sender and interpret it for recipient in frontend
     });
-    await payment.save();
 
+    await payment.save();
     console.log('Payment record created successfully:', payment);
     res.status(201).json({ message: 'Payment created successfully', payment });
   } catch (error) {
@@ -41,7 +42,11 @@ router.post('/', verifyToken, async (req, res) => {
   }
 });
 
-// Route to get customer's payment history
+
+
+
+
+// Route to get the user's payment history
 router.get('/history', verifyToken, async (req, res) => {
   const userId = req.user.id;
 
@@ -50,15 +55,34 @@ router.get('/history', verifyToken, async (req, res) => {
     const payments = await Payment.find({
       $or: [{ sender: userId }, { recipient: userId }]
     })
-      .populate('sender', 'name email accountNumber')       // Populate sender's name, email, and accountNumber
-      .populate('recipient', 'name email accountNumber')    // Populate recipient's name, email, and accountNumber
-      .sort({ createdAt: -1 });                            // Sort by latest first
+      .populate('sender', 'name email accountNumber')
+      .populate('recipient', 'name email accountNumber')
+      .sort({ createdAt: -1 });
 
-    res.status(200).json(payments);
+    // Add a `displayText` field based on the user's role in the transaction
+    const modifiedPayments = payments.map((payment) => {
+      // Determine if the user is the recipient (Money In) or the sender (Sent)
+      if (payment.recipient._id.toString() === userId) {
+        payment.displayText = `Money In from ${payment.sender.name}`;
+        payment.transactionType = 'incoming'; // Mark as incoming if user is recipient
+      } else {
+        payment.displayText = `Sent to ${payment.recipient.name}`;
+        payment.transactionType = 'outgoing'; // Mark as outgoing if user is sender
+      }
+      return payment;
+    });
+
+    res.status(200).json(modifiedPayments);
   } catch (error) {
     console.error('Error retrieving payment history:', error);
     res.status(500).json({ message: 'Failed to retrieve payment history', error });
   }
 });
+
+
+
+
+
+
 
 module.exports = router;

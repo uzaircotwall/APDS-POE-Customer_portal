@@ -14,20 +14,26 @@ const verifyAdmin = (req, res, next) => {
 };
 
 // Route to get all pending payments (for admins) with populated sender and recipient details
+// Route to get all unique pending payments for admins
 router.get('/payments', verifyToken, verifyAdmin, async (req, res) => {
   try {
-    // Fetch all pending payments and populate sender and recipient details
     const payments = await Payment.find({ status: 'Pending' })
       .populate('sender', 'name email accountNumber')
       .populate('recipient', 'name email accountNumber');
 
-    console.log('Fetched pending payments with populated details:', payments);
-    res.status(200).json(payments);
+    // Filter out duplicate payments to show unique entries
+    const uniquePayments = payments.filter(
+      (payment, index, self) =>
+        index === self.findIndex((p) => p.sender.equals(payment.sender) && p.recipient.equals(payment.recipient))
+    );
+
+    res.status(200).json(uniquePayments);
   } catch (error) {
     console.error('Error retrieving pending payments:', error);
     res.status(500).json({ message: 'Failed to retrieve payments', error });
   }
 });
+
 
 // Route to approve a payment
 router.post('/payments/:id/approve', verifyToken, verifyAdmin, async (req, res) => {
@@ -61,7 +67,7 @@ router.post('/payments/:id/approve', verifyToken, verifyAdmin, async (req, res) 
 
     // Update the payment record to reflect a completed transaction
     payment.status = 'Approved';
-    payment.transactionType = 'completed';
+    payment.transactionType = 'completed';  // Optional: mark transaction type as 'completed'
     await payment.save();
 
     console.log('Payment approved and processed successfully:', payment);
